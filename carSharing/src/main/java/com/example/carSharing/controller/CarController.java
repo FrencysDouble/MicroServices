@@ -6,6 +6,7 @@ import com.example.carSharing.service.CarService;
 import com.example.carSharing.service.TokenVerifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -36,4 +37,22 @@ public class CarController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid token");
         }
     }
+
+    @GetMapping("/get[id]")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public ResponseEntity<Car> getCar(@RequestHeader("Authorization") String jwtToken, @PathVariable Long id)
+    {
+        if (tokenVerifier.verify(jwtToken)) {
+            Car car = carService.getCar(id);
+            if (car != null) {
+                return ResponseEntity.ok(car);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+    }
+
 }

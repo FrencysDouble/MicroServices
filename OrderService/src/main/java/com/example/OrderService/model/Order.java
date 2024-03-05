@@ -9,11 +9,12 @@ public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "order_id")
     private Long id;
     @Column(name = "hours")
     private String hours;
-
+    @Column(name = "car_id")
+    private Long car_id;
     @Column(name = "total_price")
     private String total_price;
 }
