@@ -12,17 +12,17 @@ public class Car {
     private String license_plate;
 
     @Column(name = "price_per_hour")
-    private String price_hour;
+    private Long price_hour;
 
     @Column(name = "car_status")
     private CarStatus car_status;
 
 
-    public String getPrice_hour() {
+    public Long getPrice_hour() {
         return price_hour;
     }
 
-    public void setPrice_hour(String price_hour) {
+    public void setPrice_hour(Long price_hour) {
         this.price_hour = price_hour;
     }
     public Long getId() {

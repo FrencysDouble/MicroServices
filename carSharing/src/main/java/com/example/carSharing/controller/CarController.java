@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 @RestController
-@RequestMapping("api/v1/car")
+@RequestMapping("/api/v1/car")
 public class CarController {
 
     private static final Logger logger = LoggerFactory.getLogger(CarController.class);
@@ -38,7 +38,7 @@ public class CarController {
         }
     }
 
-    @GetMapping("/get[id]")
+    @GetMapping("/get/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public ResponseEntity<Car> getCar(@RequestHeader("Authorization") String jwtToken, @PathVariable Long id)
     {

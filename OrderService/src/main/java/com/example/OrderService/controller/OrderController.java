@@ -3,6 +3,7 @@ package com.example.OrderService.controller;
 
 import com.example.OrderService.model.Car;
 import com.example.OrderService.model.Order;
+import com.example.OrderService.model.RequestOrder;
 import com.example.OrderService.service.OrderService;
 import com.example.OrderService.service.TokenVerifier;
 import jakarta.persistence.Entity;
@@ -32,23 +33,27 @@ private static final Logger logger = LoggerFactory.getLogger(OrderController.cla
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<String> createOrder(@RequestHeader("Authorization") String jwtToken)
+    public ResponseEntity<String> createOrder(@RequestHeader("Authorization") String jwtToken, @RequestBody RequestOrder requestOrder)
     {
         if (tokenVerifier.verify(jwtToken))
         {
-            logger.info(carDataGet(jwtToken).getBody().toString());
+            Car car = carDataGet(jwtToken,requestOrder.getCar_id()).getBody();
+            if (car != null) {
+                orderService.addOrder(car,requestOrder);
+            }
+
             return ResponseEntity.ok("Token is valid");
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token is not valid");
     }
 
-    public ResponseEntity<Car> carDataGet(String jwtToken)
+    public ResponseEntity<Car> carDataGet(String jwtToken,Long car_id)
     {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", jwtToken);
         HttpEntity<String> requestEntity = new HttpEntity<>(headers);
 
-        String authService = "http://localhost:8081/api/v1/car/get[id]";
+        String authService = "http://localhost:8081/api/v1/car/get/" + car_id;
         ResponseEntity<Car> response = restTemplate.exchange(authService, HttpMethod.GET, requestEntity, Car.class);
         return response;
     }
