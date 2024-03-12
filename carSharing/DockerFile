@@ -1,14 +1,9 @@
-# Используем официальный образ Java 21
 FROM openjdk:21-jdk-slim
 
-# Копируем собранный JAR-файл первого микросервиса в контейнер
-COPY target/carSharing-0.0.1.jar carSharing-0.0.1.jar
+COPY ./build/libs/carSharing-0.0.1.jar carSharing-0.0.1.jar
 
-# Устанавливаем точку монтирования
 VOLUME /tmp
 
-# Указываем порт, на котором будет работать первый микросервис
 EXPOSE 8081
 
-# Запускаем первый микросервис при старте контейнера
 ENTRYPOINT ["java", "-jar", "carSharing-0.0.1.jar"]
