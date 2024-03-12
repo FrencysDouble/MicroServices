@@ -58,14 +58,13 @@ public class UserController {
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public ResponseEntity<String> loginUser(@RequestBody UserCredentials userCredentials) {
-        if (userCredentials.getEmail() != null && userCredentials.getPassword() != null)
-        {
-         String token = userService.authenticateUser(userCredentials.getEmail());
-            return ResponseEntity.ok(token);
-
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+        if (userCredentials.getEmail() != null && userCredentials.getPassword() != null) {
+            String token = userService.authenticateUser(userCredentials.getEmail(), userCredentials.getPassword());
+            if (token != null) {
+                return ResponseEntity.ok(token);
+            }
         }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
     }
 
     @PostMapping("/verify-token")

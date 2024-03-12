@@ -20,8 +20,8 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authorizeRequests) ->
                         authorizeRequests
-                                .requestMatchers("/api/v1/user/add","/api/v1/user/login","/api/v1/user/verify-token").permitAll()// Allow access to /api/v1/user/add without authentication
-                                .anyRequest().authenticated() // Require authentication for any other endpoint
+                                .requestMatchers("/api/v1/user/add","/api/v1/user/login","/api/v1/user/verify-token").permitAll()
+                                .anyRequest().authenticated()
                 );
 
         return http.build();
