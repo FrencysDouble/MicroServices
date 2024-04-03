@@ -1,0 +1,129 @@
+version: '3.8'
+
+services:
+  mysql-user:
+    container_name: mysql-user
+    image: mysql:latest
+    environment:
+      MYSQL_DATABASE: userdb
+      MYSQL_ROOT_PASSWORD: 'root'
+    volumes:
+      - ./mysql-user:/var/lib/mysql
+    ports:
+      - "3307:3306"
+    restart: unless-stopped
+    networks:
+      - my-network
+
+  mysql-car:
+    container_name: mysql-car
+    image: mysql:latest
+    environment:
+      MYSQL_DATABASE: cardb
+      MYSQL_ROOT_PASSWORD: 'root'
+    volumes:
+      - ./mysql-car:/var/lib/mysql
+    ports:
+      - "3308:3306"
+    restart: unless-stopped
+    networks:
+      - my-network
+
+  mysql-order:
+    container_name: mysql-order
+    image: mysql:latest
+    environment:
+      MYSQL_DATABASE: orderdb
+      MYSQL_ROOT_PASSWORD: 'root'
+    volumes:
+      - ./mysql-order:/var/lib/mysql
+    ports:
+      - "3309:3306"
+    restart: unless-stopped
+    networks:
+      - my-network
+
+  apigateway:
+    build: ./api-gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - eureka
+      - authservice
+      - carsharingservice
+      - orderservice
+    networks:
+      - my-network
+
+  authservice:
+    build: ./AuthService
+    ports:
+      - "8081:8081"
+    depends_on:
+      - eureka
+    networks:
+      - my-network
+
+  carsharingservice:
+    build: ./carSharing
+    ports:
+      - "8082:8082"
+    depends_on:
+      - eureka
+    networks:
+      - my-network
+
+  orderservice:
+    build: ./OrderService
+    ports:
+      - "8083:8083"
+    depends_on:
+      - eureka
+    networks:
+      - my-network
+
+  eureka:
+    image: springcloud/eureka
+    ports:
+      - "8761:8761"
+    networks:
+      - my-network
+
+  ## Keycloak Config with Mysql database
+  keycloak-mysql:
+    container_name: keycloak-mysql
+    image: mysql
+    volumes:
+      - ./mysql_keycloak_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: keycloak
+      MYSQL_USER: keycloak
+      MYSQL_PASSWORD: password
+    networks:
+      - my-network
+
+  keycloak:
+    container_name: keycloak
+    image: quay.io/keycloak/keycloak:24.0.1
+    command: [ "start-dev", "--import-realm" ]
+    environment:
+      DB_VENDOR: MYSQL
+      DB_ADDR: mysql
+      DB_DATABASE: keycloak
+      DB_USER: keycloak
+      DB_PASSWORD: password
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    ports:
+      - "8181:8080"
+    volumes:
+      - ./realms/:/opt/keycloak/data/import/
+    depends_on:
+      - keycloak-mysql
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    driver: bridge

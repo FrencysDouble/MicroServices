@@ -17,13 +17,13 @@ import org.springframework.web.client.RestTemplate;
 @RequestMapping("api/v1/order")
 public class OrderController {
 
-private final TokenVerifier tokenVerifier;
+    private final TokenVerifier tokenVerifier;
 
-private final OrderService orderService;
+    private final OrderService orderService;
 
-private final RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
 
-private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
+    private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
 
     public OrderController(TokenVerifier tokenVerifier, OrderService orderService, RestTemplate restTemplate) {
         this.tokenVerifier = tokenVerifier;
@@ -33,28 +33,21 @@ private static final Logger logger = LoggerFactory.getLogger(OrderController.cla
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<String> createOrder(@RequestHeader("Authorization") String jwtToken, @RequestBody RequestOrder requestOrder)
-    {
-        if (tokenVerifier.verify(jwtToken))
-        {
-            Car car = carDataGet(jwtToken,requestOrder.getCar_id()).getBody();
-            if (car != null) {
-                orderService.addOrder(car,requestOrder);
-            }
-
-            return ResponseEntity.ok("Token is valid");
+    public ResponseEntity<String> createOrder(@RequestBody RequestOrder requestOrder) {
+        Car car = carDataGet(requestOrder.getCar_id()).getBody();
+        if (car != null) {
+            orderService.addOrder(car, requestOrder);
         }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token is not valid");
+
+        return ResponseEntity.ok("Token is valid");
     }
 
-    public ResponseEntity<Car> carDataGet(String jwtToken,Long car_id)
-    {
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", jwtToken);
-        HttpEntity<String> requestEntity = new HttpEntity<>(headers);
+    public ResponseEntity<Car> carDataGet(Long car_id) {
+        String apiGatewayUrl = "http://localhost:8082/api/v1/car/get";
 
-        String authService = "http://localhost:8081/api/v1/car/get/" + car_id;
-        ResponseEntity<Car> response = restTemplate.exchange(authService, HttpMethod.GET, requestEntity, Car.class);
+        String url = apiGatewayUrl + "/" + car_id;
+
+        ResponseEntity<Car> response = restTemplate.getForEntity(url, Car.class);
         return response;
     }
 }
