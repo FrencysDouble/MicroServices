@@ -46,7 +46,11 @@ services:
   apigateway:
     build: ./api-gateway
     ports:
-      - "8080:8080"
+      - "8181:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - spring.profiles.active=docker
+      - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY= TRACE
     depends_on:
       - eureka
       - authservice
@@ -116,7 +120,7 @@ services:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
     ports:
-      - "8181:8080"
+      - "8080:8080"
     volumes:
       - ./realms/:/opt/keycloak/data/import/
     depends_on:
