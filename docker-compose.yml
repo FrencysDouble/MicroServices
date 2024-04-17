@@ -45,6 +45,7 @@ services:
 
   apigateway:
     build: ./api-gateway
+    container_name: api-gateway
     ports:
       - "8181:8080"
     environment:
@@ -53,41 +54,45 @@ services:
       - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY= TRACE
     depends_on:
       - eureka
-      - authservice
-      - carsharingservice
-      - orderservice
+      - keycloak
     networks:
       - my-network
 
-  authservice:
+  auth-service:
     build: ./AuthService
+    container_name: auth-service
     ports:
       - "8081:8081"
     depends_on:
+      - apigateway
       - eureka
     networks:
       - my-network
 
-  carsharingservice:
+  carshare-service:
     build: ./carSharing
+    container_name: carshare-service
     ports:
       - "8082:8082"
     depends_on:
       - eureka
+      - apigateway
     networks:
       - my-network
 
-  orderservice:
+  order-service:
     build: ./OrderService
+    container_name: order-service
     ports:
       - "8083:8083"
     depends_on:
+      - apigateway
       - eureka
     networks:
       - my-network
 
   eureka:
-    image: springcloud/eureka
+    build: ./EurekaServer
     ports:
       - "8761:8761"
     networks:
