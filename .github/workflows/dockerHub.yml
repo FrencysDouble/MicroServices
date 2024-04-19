@@ -34,7 +34,7 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
       - name: Build docker image
-        working-directory: 'order-service'
+        working-directory: 'AuthService'
         run: docker build -f Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/micro-car-workflow:test .
       - name: Log in to DockerHub
         uses: docker/login-action@v3
