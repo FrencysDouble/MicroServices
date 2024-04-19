@@ -36,7 +36,7 @@ jobs:
       - name: All Files
         run: ls
       - name: Build with Gradle
-        run: services=("AuthService" "EurekaServer" "OrderService" "api-gateway" "carSharing") for service in "${services[@]}"; do echo "Building $service" cd "$service" ./gradlew build cd .. done
+        run: cd AuthService ./gradlew build
       - name: Build docker image
         working-directory: 'AuthService'
         run: docker build -f Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/micro-car-workflow:test .
