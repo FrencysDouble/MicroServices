@@ -61,7 +61,7 @@ jobs:
           java-version: '21'
           distribution: 'adopt'
       - name: Build with Gradle
-        run: cd api-gateway && chmod +x gradlew && ./gradlew build && cd ..
+        run: cd api-gateway && chmod +x gradlew && ./gradlew build
       - name: Build docker image
         working-directory: 'api-gateway'
         run: docker build -f Dockerfile -t cr.yandex/${{ secrets.YC_REGISTRY_ID }}/zakharov-gateway:test .
