@@ -73,3 +73,16 @@ jobs:
           password: ${{ secrets.YC_KEYS }}
       - name: Push tag to YC Registry
         run: docker push cr.yandex/${{ secrets.YC_REGISTRY_ID }}/zakharov-car-sharing-service:test
+
+  deploy-service:
+    needs: [ push-to-yandex ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy serverless container
+        uses: yc-actions/yc-sls-container-deploy@v1
+        with:
+          yc-sa-json-credentials: ${{ secrets.YC_KEYS }}
+          container-name: ${{ secrets.YC_CONTAINER_NAME }}
+          folder-id: ${{ secrets.YC_FOLDER_ID }}
+          revision-image-url: cr.yandex/${{ secrets.YC_REGISTRY_ID }}/zakharov-car-sharing-service:test
+          revision-service-account-id: ${{ secrets.YC_SA_ID }}
