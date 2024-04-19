@@ -41,7 +41,7 @@ public class OrderController {
 
         return ResponseEntity.ok("Token is valid");
     }
-
+    @GetMapping("/get{id}")
     public ResponseEntity<Car> carDataGet(Long car_id) {
         String apiGatewayUrl = "http://localhost:8082/api/v1/car/get";
 
