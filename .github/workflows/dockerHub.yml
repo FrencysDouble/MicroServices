@@ -33,6 +33,8 @@ jobs:
           distribution: 'adopt'
       - name: Working Directory is
         run: pwd
+      - name: All Files
+        run: ls
       - name: Build with Gradle
         run: ./gradlew build
       - name: Build docker image
