@@ -39,7 +39,7 @@ jobs:
         run: cd AuthService && chmod +x gradlew && ./gradlew build && cd ..
       - name: Build docker image
         working-directory: 'AuthService'
-        run: docker build -f Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/micro-car-workflow:test .
+        run: docker build -f Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/AuthService-workflow:test .
       - name: Log in to DockerHub
         uses: docker/login-action@v3
         with:
