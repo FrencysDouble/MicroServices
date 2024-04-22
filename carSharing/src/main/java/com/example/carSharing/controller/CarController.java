@@ -24,7 +24,7 @@ public class CarController {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<String> createCar(@RequestBody Car car) {
             carService.addCar(car);
-            return ResponseEntity.ok("Car is Added and Token is valid");
+            return ResponseEntity.status(HttpStatus.CREATED).body("Car is Added and Token is valid");
     }
 
     @GetMapping("/get/{id}")
