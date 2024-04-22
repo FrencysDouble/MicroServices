@@ -20,7 +20,7 @@ jobs:
         run: ls
 
       - name: Unit-tests
-        run: cd CarSharing && chmod +x gradlew && ./gradlew test
+        run: cd carSharing && chmod +x gradlew && ./gradlew test
 
   build-to-docker:
     needs: [tests]
