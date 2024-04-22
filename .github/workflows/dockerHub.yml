@@ -17,7 +17,7 @@ jobs:
           java-version: '21'
           distribution: 'adopt'
       - name: Unit-tests
-        run: ./carSharing/gradlew test
+        run: chmod +x gradlew && ./carSharing/gradlew test
 
   build-to-docker:
     needs: [tests]
