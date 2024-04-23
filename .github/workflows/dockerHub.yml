@@ -16,8 +16,6 @@ jobs:
         with:
           java-version: '21'
           distribution: 'adopt'
-      - name: All Files
-        run: ls
 
       - name: Unit-tests
         run: cd carSharing && chmod +x gradlew && ./gradlew test
