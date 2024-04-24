@@ -5,6 +5,8 @@ import com.example.carSharing.CarRepository;
 import com.example.carSharing.model.Car;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CarService {
 
@@ -22,5 +24,9 @@ public class CarService {
     public Car getCar(Long id)
     {
         return carRepository.findCarById(id);
+    }
+
+    public List<Car> getAllCar(){
+        return carRepository.findAll();
     }
 }

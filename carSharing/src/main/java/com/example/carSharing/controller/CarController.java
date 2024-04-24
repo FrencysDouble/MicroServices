@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/car")
 public class CarController {
@@ -38,6 +40,21 @@ public class CarController {
             return ResponseEntity.notFound().build();
         }
 
+    }
+
+    @GetMapping("/get")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public ResponseEntity<List<Car>> getAllCar()
+    {
+        List<Car> cars = carService.getAllCar();
+        if (cars != null)
+        {
+            return ResponseEntity.ok(cars);
+        }
+        else
+        {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 }

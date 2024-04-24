@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -46,6 +47,21 @@ public class UserController {
             return HttpStatus.CREATED;
         } catch (DataIntegrityViolationException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User with this email already exists");
+        }
+    }
+
+    @GetMapping("get{id}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public ResponseEntity<User> getUserById(@PathVariable Long id)
+    {
+        try {
+            User user = userService.getUser(id);
+            return ResponseEntity.ok(user);
+        }
+        catch (NullPointerException e)
+        {
+            e.printStackTrace();
+            return ResponseEntity.notFound().build();
         }
     }
 

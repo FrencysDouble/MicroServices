@@ -29,4 +29,9 @@ public class UserService {
 
         return HttpStatus.CREATED;
     }
+
+    public User getUser(Long id)
+    {
+        return userRepository.findUserById(id);
+    }
 }

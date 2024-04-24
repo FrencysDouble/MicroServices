@@ -13,6 +13,8 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/v1/order")
 public class OrderController {
@@ -39,7 +41,7 @@ public class OrderController {
             orderService.addOrder(car, requestOrder);
         }
 
-        return ResponseEntity.ok("Token is valid");
+        return ResponseEntity.ok("OK");
     }
     @GetMapping("/get{id}")
     public ResponseEntity<Car> carDataGet(Long car_id) {
@@ -49,5 +51,19 @@ public class OrderController {
 
         ResponseEntity<Car> response = restTemplate.getForEntity(url, Car.class);
         return response;
+    }
+
+    @GetMapping("/get")
+    public ResponseEntity<List<Order>> getAllOrder()
+    {
+        try{
+            List<Order> orders = orderService.getAllOrders();
+            return ResponseEntity.ok(orders);
+        }
+        catch (NullPointerException e)
+        {
+            e.printStackTrace();
+            return ResponseEntity.notFound().build();
+        }
     }
 }

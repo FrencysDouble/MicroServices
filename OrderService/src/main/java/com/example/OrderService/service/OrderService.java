@@ -9,6 +9,8 @@ import org.aspectj.weaver.ast.Or;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class OrderService {
 
@@ -28,5 +30,10 @@ public class OrderService {
         order.setTotal_price(total_price);
         orderRepository.save(order);
 
+    }
+
+    public List<Order> getAllOrders()
+    {
+        return orderRepository.findAll();
     }
 }
