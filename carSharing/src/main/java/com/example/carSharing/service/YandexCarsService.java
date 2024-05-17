@@ -2,19 +2,28 @@ package com.example.carSharing.service;
 
 import com.example.carSharing.model.Car;
 import com.example.carSharing.model.CarStatus;
+import jakarta.persistence.GeneratedValue;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Profile("nodb")
 @Service
 public class YandexCarsService {
 
+    private List<Car> cars = carInitialize();
 
-    public List<Car> cars = carInitialize();
-
-
+    public void addCar(Car car) {
+        cars.add(car);
+    }
 
     public Car getCar(Long id) {
         for (Car car : cars) {
@@ -24,18 +33,13 @@ public class YandexCarsService {
         }
         return null;
     }
-    public List<Car> getAllCar()
-    {
-        return new ArrayList<>(cars);
 
+    public List<Car> getAllCar() {
+        return new ArrayList<>(cars);
     }
 
-
-    public List<Car> carInitialize()
-    {
+    private List<Car> carInitialize() {
         List<Car> initCar = new ArrayList<>();
-
-
         Car car1 = new Car();
         car1.setId(1L);
         car1.setName("Toyota Camry");

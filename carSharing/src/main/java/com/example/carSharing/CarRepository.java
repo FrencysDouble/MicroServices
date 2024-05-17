@@ -1,6 +1,7 @@
 package com.example.carSharing;
 
 import com.example.carSharing.model.Car;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
