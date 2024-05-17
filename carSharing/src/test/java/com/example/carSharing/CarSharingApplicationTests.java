@@ -3,6 +3,7 @@ package com.example.carSharing;
 import com.example.carSharing.controller.CarController;
 import com.example.carSharing.model.CarStatus;
 import com.example.carSharing.service.CarService;
+import com.example.carSharing.service.YandexCarsService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,9 @@ class CarSharingApplicationTests {
 
     @MockBean
     private CarService carService;
+
+    @MockBean
+    private YandexCarsService yandexCarsService;
 
     @Test
     void shouldCreateCar() throws Exception {

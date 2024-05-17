@@ -3,6 +3,7 @@ package com.example.carSharing.controller;
 
 import com.example.carSharing.model.Car;
 import com.example.carSharing.service.CarService;
+import com.example.carSharing.service.YandexCarsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.*;
@@ -18,8 +19,12 @@ public class CarController {
 
     private final CarService carService;
 
-    public CarController( CarService carService) {
+    private final YandexCarsService yandexCarsService;
+
+    public CarController(CarService carService, YandexCarsService yandexCarsService) {
         this.carService = carService;
+        this.yandexCarsService = yandexCarsService;
+        ;
     }
 
     @PostMapping("/add")
@@ -56,5 +61,28 @@ public class CarController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @GetMapping("/getTest")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public ResponseEntity<List<Car>> getCarTest() {
+
+        List<Car> cars = yandexCarsService.getAllCar();
+
+        return ResponseEntity.accepted().body(cars);
+    }
+
+
+    @GetMapping("/getOne/{id}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public ResponseEntity<Car> getCarById(@PathVariable Long id)
+    {
+        Car car = yandexCarsService.getCar(id);
+        if (car == null)
+        {
+            return ResponseEntity.notFound().build();
+        }
+        return  ResponseEntity.accepted().body(car);
+    }
+
 
 }
