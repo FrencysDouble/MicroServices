@@ -11,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import com.example.carSharing.model.Car;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -20,6 +21,8 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+
+@ActiveProfiles("nodb")
 @WebMvcTest(CarController.class)
 class CarSharingApplicationTests {
 
@@ -62,7 +65,7 @@ class CarSharingApplicationTests {
         car.setLicense_plate("1XMM32");
         car.setCar_status(CarStatus.AVAILABLE);
 
-        when(carService.getCar(1L)).thenReturn(car);
+        when(yandexCarsService.getCar(1L)).thenReturn(car);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/car/get/1")
                         .contentType(MediaType.APPLICATION_JSON))
