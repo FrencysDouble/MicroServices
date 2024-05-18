@@ -20,6 +20,9 @@ jobs:
       - name: Unit-tests
         run: cd carSharing && chmod +x gradlew && ./gradlew test
 
+      - name: Component-tests
+        run: cd OrderService && chmod +x gradlew && ./gradlew test
+
   build-to-docker:
     needs: [tests]
     name: Push to docker

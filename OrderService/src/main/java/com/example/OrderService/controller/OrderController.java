@@ -43,7 +43,7 @@ public class OrderController {
 
         return ResponseEntity.ok("OK");
     }
-    @GetMapping("/get{id}")
+    @GetMapping("/get/{id}")
     public ResponseEntity<Car> carDataGet(Long car_id) {
         String apiGatewayUrl = "http://carshare-service:8082/api/v1/car/get";
 

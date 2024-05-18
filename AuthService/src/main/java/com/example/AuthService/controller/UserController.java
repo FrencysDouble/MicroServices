@@ -50,7 +50,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("get{id}")
+    @GetMapping("/get/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public ResponseEntity<User> getUserById(@PathVariable Long id)
     {
