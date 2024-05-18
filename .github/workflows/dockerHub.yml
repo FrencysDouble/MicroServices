@@ -67,8 +67,8 @@ jobs:
       - name: Build with Gradle
         run: cd carSharing && chmod +x gradlew && ./gradlew build
       - name: Build docker image
-        working-directory: 'carSharing'
-        run: docker build -f Dockerfile -t cr.yandex/${{ secrets.YC_REGISTRY_ID }}/zakharov-car-share:test .
+        working-directory: 'api-gateway'
+        run: docker build -f Dockerfile -t cr.yandex/${{ secrets.YC_REGISTRY_ID }}/api-gateway:test .
       - name: Login to YC Registry
         uses: docker/login-action@v3.0.0
         with:
@@ -76,7 +76,7 @@ jobs:
           username: json_key
           password: ${{ secrets.YC_KEYS }}
       - name: Push tag to YC Registry
-        run: docker push cr.yandex/${{ secrets.YC_REGISTRY_ID }}/zakharov-car-share:test
+        run: docker push cr.yandex/${{ secrets.YC_REGISTRY_ID }}/api-gateway:test
 
   deploy-service:
     needs: [ push-to-yandex ]
@@ -88,5 +88,5 @@ jobs:
           yc-sa-json-credentials: ${{ secrets.YC_KEYS }}
           container-name: ${{ secrets.YC_CONTAINER_NAME }}
           folder-id: ${{ secrets.YC_FOLDER_ID }}
-          revision-image-url: cr.yandex/${{ secrets.YC_REGISTRY_ID }}/zakharov-car-share:test
+          revision-image-url: cr.yandex/${{ secrets.YC_REGISTRY_ID }}/api-gateway:test
           revision-service-account-id: ${{ secrets.YC_SA_ID }}
