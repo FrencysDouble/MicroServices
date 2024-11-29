@@ -150,7 +150,7 @@ services:
       - my-network
 
   grafana:
-    image: grafana/grafana-oss:8.5.2
+    image: grafana/grafana-oss:11.0.0
     container_name: grafana
     ports:
       - "3000:3000"
@@ -163,6 +163,28 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=password
     networks:
       - my-network
+
+  promtail:
+    image: grafana/promtail:2.6.1
+    container_name: promtail
+    volumes:
+      - ./promtail-config.yaml:/etc/promtail/promtail-config.yaml
+      - /var/log:/var/log
+    command: -config.file=/etc/promtail/promtail-config.yaml
+    networks:
+      - my-network
+
+  loki:
+    image: grafana/loki:3.0.0
+    container_name: loki
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+    volumes:
+      - ./loki-config.yaml:/etc/loki/local-config.yaml
+    networks:
+      - my-network
+
 
 networks:
   my-network:
